@@ -2,7 +2,7 @@ import axios from 'axios';
 import moment from 'moment';
 
 function fetch_stations(dispatch) {
-   return axios.get('https://rata.digitraffic.fi/api/v1/metadata/stations').then((response) => {
+   axios.get('https://rata.digitraffic.fi/api/v1/metadata/stations').then((response) => {
 
       // DECLARE STATIONS HASHMAP
       const stations = new Map();
@@ -29,7 +29,7 @@ function fetch_route(origin, destination, dispatch)  {
    const timestamp = moment().format("YYYY-MM-DD");
 
    // EXECUTE REQUEST
-   return axios.get('https://rata.digitraffic.fi/api/v1/live-trains/station/' + origin + '/' + destination + '?departure_date=' + timestamp).then((response) => {
+   axios.get('https://rata.digitraffic.fi/api/v1/live-trains/station/' + origin + '/' + destination + '?departure_date=' + timestamp).then((response) => {
    
       // DECLARE TRAINS HASHMAP
       const trains = [];
@@ -43,7 +43,6 @@ function fetch_route(origin, destination, dispatch)  {
             if (waypoint.stationShortCode === origin) {
                start = Date.parse(waypoint.scheduledTime)
             }
-
             if (waypoint.stationShortCode === destination) {
                end = Date.parse(waypoint.scheduledTime)
             }

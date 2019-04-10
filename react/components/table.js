@@ -6,7 +6,7 @@ import Loading from './loading';
 function Table({ data }) {
    if (data !== null) {
       return (
-         <View style={{ padding: 2 }}>
+         <View style={ styles.container }>
             <FlatList
                data={ data }
                keyExtractor={(item, index) => index.toString()}
@@ -14,22 +14,26 @@ function Table({ data }) {
             />
          </View>
       )
-   } else {
-      return <Loading />
-   }
+
+   // RENDER SPINNER WHILE REQUEST IS PENDING
+   } else { return <Loading /> }
 }
 
 function Row({ item }) {
+
+   // IF NAME IS MISSING, FALLBACK TO TYPE
+   const header = (item.name === '') ? item.type : item.name;
+
    return (
       <View style={ styles.row }>
-         <Text style={styles.first }>
+         <Text style={ styles.first }>
             { item.type + ' ' + item.id }
          </Text>
          <Text style={ styles.column }>
-            { moment(item.start).format('hh:mm') }
+            { header }
          </Text>
          <Text style={ styles.column }>
-            { moment(item.end).format('hh:mm') }
+            { moment(item.start).format('H:mm') }
          </Text>
          <Text style={ styles.column }>
             { item.duration }min
@@ -39,15 +43,21 @@ function Row({ item }) {
 }
 
 const styles = {
+   container: {
+      padding: 5,
+      paddingBottom: 2
+   },
    row: {
       padding: 10,
       flexDirection: 'row',
       backgroundColor: 'lightgray',
-      marginBottom: 2
+      marginBottom: 3,
+      borderBottomWidth: 1,
+      borderBottomColor: '#BCBCBC',
    },
    first: {
       textAlign: 'left',
-       flex: 2
+      flex: 2
    },
    column: {
       flex: 1,
