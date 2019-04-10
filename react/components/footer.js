@@ -1,23 +1,15 @@
 import React from 'react';
-import { Text, View, TouchableWithoutFeedback } from 'react-native';
+import { View } from 'react-native';
 
-function Footer({ label, func }) { return (
-   <TouchableWithoutFeedback onPress={ func }>
-      <View style={ styles.container }>
-         <Text style={ styles.text }>
-            { label }
-         </Text>
-      </View>
-   </TouchableWithoutFeedback>
+function Footer({ children }) { return (
+   <View style={ styles.container }>
+      { children }
+   </View>
 )}
 
 const styles = {
    container: {
-      backgroundColor: 'lightgray',
-      padding: 15,
-   },
-   text: {
-      textAlign: 'center'
+      flexDirection: 'row'
    }
 }
 

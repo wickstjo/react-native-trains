@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-function fetch_stations(dispatch)  {
+function fetch_stations(dispatch) {
    return axios.get('https://rata.digitraffic.fi/api/v1/metadata/stations').then((response) => {
 
       // DECLARE STATIONS HASHMAP
