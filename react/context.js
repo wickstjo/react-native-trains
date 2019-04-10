@@ -5,18 +5,10 @@ function reducer(state, action) {
    switch (action.type) {
 
       // INCREMENT
-      case 'increment': {
+      case 'stations': {
          return {
             ...state,
-            block: state.block + 1
-         }
-      }
-      
-      // RESET
-      case 'reset': {
-         return {
-            ...state,
-            block: action.payload
+            stations: action.payload
          }
       }
 
@@ -35,8 +27,7 @@ function Provider(props) {
 
    // ATTACH THE REDUCER WITH THE INITIAL STATE
    const [state, dispatch] = useReducer(reducer, {
-      block: 0,
-      route: []
+      stations: null
    });
 
    return (
