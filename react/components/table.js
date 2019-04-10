@@ -1,31 +1,57 @@
 import React from 'react';
-import { Text, FlatList } from 'react-native';
+import moment from 'moment';
+import { Text, View, FlatList } from 'react-native';
 import Loading from './loading';
 
 function Table({ data }) {
    if (data !== null) {
       return (
-         <FlatList
-            data={ Array.from(data) }
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={({ item, index }) => <Text>{ item[0] }</Text> }
-            style={ styles.table }
-         />
+         <View style={{ padding: 2 }}>
+            <FlatList
+               data={ data }
+               keyExtractor={(item, index) => index.toString()}
+               renderItem={({ item, index }) => <Row item={ item } /> }
+            />
+         </View>
       )
    } else {
       return <Loading />
    }
 }
 
+function Row({ item }) {
+   return (
+      <View style={ styles.row }>
+         <Text style={styles.first }>
+            { item.type + ' ' + item.id }
+         </Text>
+         <Text style={ styles.column }>
+            { moment(item.start).format('hh:mm') }
+         </Text>
+         <Text style={ styles.column }>
+            { moment(item.end).format('hh:mm') }
+         </Text>
+         <Text style={ styles.column }>
+            { item.duration }min
+         </Text>
+      </View>
+   )
+}
+
 const styles = {
-   table: {
-      padding: 5,
-   },
    row: {
       padding: 10,
       flexDirection: 'row',
       backgroundColor: 'lightgray',
       marginBottom: 2
+   },
+   first: {
+      textAlign: 'left',
+       flex: 2
+   },
+   column: {
+      flex: 1,
+      textAlign: 'right'
    }
 }
 

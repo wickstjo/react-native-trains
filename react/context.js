@@ -4,11 +4,19 @@ import React, { createContext, useReducer } from "react";
 function reducer(state, action) {
    switch (action.type) {
 
-      // INCREMENT
+      // SET STATION HASHMAP
       case 'stations': {
          return {
             ...state,
             stations: action.payload
+         }
+      }
+      
+      // SET ROUTE TRAINS
+      case 'route': {
+         return {
+            ...state,
+            route: action.payload
          }
       }
 
@@ -27,7 +35,8 @@ function Provider(props) {
 
    // ATTACH THE REDUCER WITH THE INITIAL STATE
    const [state, dispatch] = useReducer(reducer, {
-      stations: null
+      stations: null,
+      route: null
    });
 
    return (
