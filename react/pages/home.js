@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { Context } from "../context";
 import { on_load } from "../funcs/misc";
 import { fetch_stations, fetch_route } from "../funcs/apis";
+import notification from "../funcs/notifications";
 
 import Header from '../components/header';
 import Content from '../components/content';
@@ -23,7 +24,8 @@ function Home({ navigation }) {
 
    // GOTO INSPECT SCREEN
    const goto_inspect = () => {
-      navigation.navigate('Inspect')
+      //navigation.navigate('Inspect')
+      notification.schedule();
    }
 
    return (
