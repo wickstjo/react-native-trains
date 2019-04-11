@@ -9,7 +9,8 @@ function Footer({ children }) { return (
 
 const styles = {
    container: {
-      flexDirection: 'row'
+      flexDirection: 'row',
+      backgroundColor: '#6A94E1',
    }
 }
 

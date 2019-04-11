@@ -1,9 +1,9 @@
 import React from 'react';
 import { Text, View, TouchableWithoutFeedback } from 'react-native';
 
-function Clickable({ label, func, bg }) { return (
+function Clickable({ label, func }) { return (
    <TouchableWithoutFeedback onPress={ func }>
-      <View style={{ ...styles.container, backgroundColor: bg }}>
+      <View style={ styles.container }>
          <Text style={ styles.text }>
             { label }
          </Text>

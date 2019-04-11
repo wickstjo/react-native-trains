@@ -8,6 +8,7 @@ import Content from '../components/content';
 import Footer from '../components/footer';
 import Clickable from '../components/clickable';
 import Table from '../components/table';
+import Find from '../components/find';
 
 function Home({ navigation }) {
 
@@ -27,7 +28,8 @@ function Home({ navigation }) {
 
    return (
       <>
-         <Header label={ 'Schedules' } />
+         <Header label={ 'Scheduled' } />
+         <Find />
          <Content>
             <Table data={ state.route } />
          </Content>
@@ -35,7 +37,6 @@ function Home({ navigation }) {
             <Clickable
                label={ 'Refresh' }
                func={ goto_inspect }
-               bg={ '#29A947' }
             />
          </Footer>
       </>
