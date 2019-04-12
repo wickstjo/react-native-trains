@@ -1,17 +1,14 @@
 import React from 'react';
 import { View, Text } from 'react-native';
+import Input from './input';
 
 function Find() { return (
    <View style={ styles.container }>
       <View style={ styles.column }>
-      <Text style={{ ...styles.inner, ...styles.success }}>
-            Origin
-         </Text>
+         <Input placeholder='Origin' />
       </View>
       <View style={{ ...styles.column, ...styles.spacing }}>
-         <Text style={{ ...styles.inner, ...styles.error }}>
-            Destination
-         </Text>
+         <Input placeholder='Destination' />
       </View>
    </View>
 )}

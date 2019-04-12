@@ -9,10 +9,10 @@ class Notifications {
       });
    }
 
-   schedule() {
+   schedule(msg, seconds) {
       PushNotification.localNotificationSchedule({
-         message: "My Notification Message",
-         date: new Date(Date.now() + 5000)
+         message: msg,
+         date: new Date(Date.now() + (seconds * 1000))
       });
    }
 }

@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import { Context } from "../context";
 import { on_load } from "../funcs/misc";
 import { fetch_stations, fetch_route } from "../funcs/apis";
-import notification from "../funcs/notifications";
 
 import Header from '../components/header';
 import Content from '../components/content';
@@ -18,19 +17,19 @@ function Home({ navigation }) {
 
    // ON INIT LOAD, DO
    on_load(() => {
-      //fetch_stations(dispatch);
+      fetch_stations(dispatch);
       fetch_route('KKN', 'HKI', dispatch);
    })
 
    // GOTO INSPECT SCREEN
    const goto_inspect = () => {
-      //navigation.navigate('Inspect')
-      notification.schedule();
+      navigation.navigate('Inspect');
+      //notification.schedule('foo-bar-biz', 5);
    }
 
    return (
       <>
-         <Header label={ 'Scheduled' } />
+         <Header label={ 'Schedule' } />
          <Find />
          <Content>
             <Table data={ state.route } />

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import moment from 'moment';
 
+// FIND STATION ACRONYMS
 function fetch_stations(dispatch) {
    axios.get('https://rata.digitraffic.fi/api/v1/metadata/stations').then((response) => {
 
@@ -23,13 +24,14 @@ function fetch_stations(dispatch) {
    });
 }
 
+// FIND TRAINS GOING FROM X TO Y
 function fetch_route(origin, destination, dispatch)  {
 
    // GENERATE DATE
-   const timestamp = moment().format("YYYY-MM-DD");
+   const today = moment().format("YYYY-MM-DD");
 
    // EXECUTE REQUEST
-   axios.get('https://rata.digitraffic.fi/api/v1/live-trains/station/' + origin + '/' + destination + '?departure_date=' + timestamp).then((response) => {
+   axios.get('https://rata.digitraffic.fi/api/v1/live-trains/station/' + origin + '/' + destination + '?departure_date=' + today).then((response) => {
    
       // DECLARE TRAINS HASHMAP
       const trains = [];
