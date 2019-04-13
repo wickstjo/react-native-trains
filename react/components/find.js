@@ -1,17 +1,55 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import Input from './input';
 
-function Find() { return (
-   <View style={ styles.container }>
-      <View style={ styles.column }>
-         <Input placeholder='Origin' />
+function Find({ input_state, set_input_state, stations }) {
+
+   // UPDATE ORIGIN
+   const update_origin = (text) => {
+      set_input_state({
+         ...input_state,
+         origin: {
+            value: text,
+            status: exists(text)
+         }
+      })
+   }
+
+   // UPDATE DESTINATION
+   const update_destination = (text) => {
+      set_input_state({
+         ...input_state,
+         destination: {
+            value: text,
+            status: exists(text)
+         }
+      })
+   }
+
+   // CHECK IF QUERY EXISTS IN ACRONYM HASHMAP -- FORCE LOWERCASE
+   const exists = (text) => {
+      return stations.has(text.toLowerCase()) ? true : false
+   }
+
+   return (
+      <View style={ styles.container }>
+         <View style={ styles.column }>
+            <Input
+               placeholder='Origin'
+               block={ input_state.origin }
+               update={ update_origin }
+            />
+         </View>
+         <View style={{ ...styles.column, ...styles.spacing }}>
+            <Input
+               placeholder='Destination'
+               block={ input_state.destination }
+               update={ update_destination }
+            />
+         </View>
       </View>
-      <View style={{ ...styles.column, ...styles.spacing }}>
-         <Input placeholder='Destination' />
-      </View>
-   </View>
-)}
+   )
+}
 
 const styles = {
    container: {

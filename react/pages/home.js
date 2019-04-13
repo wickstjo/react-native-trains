@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Context } from "../context";
 import { on_load } from "../funcs/misc";
 import { fetch_stations, fetch_route } from "../funcs/apis";
@@ -12,8 +12,20 @@ import Find from '../components/find';
 
 function Home({ navigation }) {
 
-   // STATE
+   // GLOBAL STATE
    const { state, dispatch } = useContext(Context);
+
+   // INPUT STATE
+   const [input_state, set_input_state] = useState({
+      origin: {
+         value: '',
+         status: false,
+      },
+      destination: {
+         value: '',
+         status: false,
+      }
+   });
 
    // ON INIT LOAD, DO
    on_load(() => {
@@ -27,10 +39,18 @@ function Home({ navigation }) {
       //notification.schedule('foo-bar-biz', 5);
    }
 
+   const refresh = () => {
+      fetch_route('KKN', 'HKI', dispatch);
+   }
+
    return (
       <>
          <Header label={ 'Schedule' } />
-         <Find />
+         <Find
+            input_state={ input_state }
+            set_input_state={ set_input_state }
+            stations={ state.stations }
+         />
          <Content>
             <Table data={ state.route } />
          </Content>

@@ -1,21 +1,11 @@
-import React, { useContext, useState } from 'react';
-import { Context } from "../context";
+import React from 'react';
 import { TextInput } from 'react-native';
 
-function Input({ placeholder }) {
-
-   // GLOBAL STATE
-   const { state } = useContext(Context);
-
-   // LOCAL STATE
-   const [local_state, set_local_state] = useState({
-      value: '',
-      found: false
-   });
+function Input({ placeholder, block, update }) {
 
    // FILL IN CORRECT COLOR
    const colorize = () => {
-      if (local_state.found) {
+      if (block.status) {
          return {
             ...styles.shared,
             ...styles.success
@@ -28,21 +18,13 @@ function Input({ placeholder }) {
       }
    }
 
-   // CHECK IF THE STATION EXISTS IN HASHMAP
-   const check = (text) => {
-      set_local_state({
-         value: text,
-         found: state.stations.has(text.toLowerCase()) ? true : false
-      });
-   }
-
    return (
       <TextInput
          placeholder={ placeholder }
          style={ colorize() }
          placeholderTextColor='white'
-         onChangeText={ check }
-         value={ local_state.value }
+         onChangeText={ update }
+         value={ block.value }
       />
    )
 }
