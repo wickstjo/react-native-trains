@@ -31,7 +31,7 @@ function fetch_route(origin, destination, dispatch)  {
    const today = moment().format("YYYY-MM-DD");
 
    // EXECUTE REQUEST
-   axios.get('https://rata.digitraffic.fi/api/v1/live-trains/station/' + origin + '/' + destination + '?departure_date=' + today).then((response) => {
+   return axios.get('https://rata.digitraffic.fi/api/v1/live-trains/station/' + origin + '/' + destination + '?departure_date=' + today).then((response) => {
    
       // DECLARE TRAINS HASHMAP
       const trains = [];

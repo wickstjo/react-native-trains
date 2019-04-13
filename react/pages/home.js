@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { Context } from "../context";
-import { on_load } from "../funcs/misc";
+import { on_load, prompt } from "../funcs/misc";
 import { fetch_stations, fetch_route } from "../funcs/apis";
 
 import Header from '../components/header';
@@ -36,11 +36,28 @@ function Home({ navigation }) {
    // GOTO INSPECT SCREEN
    const goto_inspect = () => {
       navigation.navigate('Inspect');
-      //notification.schedule('foo-bar-biz', 5);
    }
 
+   // REFRESH QUERY
    const refresh = () => {
-      fetch_route('KKN', 'HKI', dispatch);
+
+      // CHECK DESTINATION
+      if (input_state.origin.status && input_state.destination.status) {
+
+         // CHECK IF THEY ARE THE SAME
+         if (input_state.origin.value !== input_state.destination.value) {
+
+            // UPDATE STATE ROUTE
+            fetch_route(
+               state.stations.get(input_state.origin.value),
+               state.stations.get(input_state.destination.value),
+               dispatch
+
+            // AFTERWARDS, PROMPT SUCCESS
+            ).then(() => { prompt('Schedule Updated!') });
+
+         } else { prompt('Stations cannot be the same!') }
+      } else { prompt('One or both of the stations are invalid!') }
    }
 
    return (
@@ -57,7 +74,7 @@ function Home({ navigation }) {
          <Footer>
             <Clickable
                label={ 'Refresh' }
-               func={ goto_inspect }
+               func={ refresh }
             />
          </Footer>
       </>

@@ -1,18 +1,21 @@
 import PushNotification from 'react-native-push-notification';
 
 class Notifications {
+
+   // ATTACH CONFIG
    constructor() {
       PushNotification.configure({
-         onNotification: function(notification) {
-            console.log( 'NOTIFICATION:', notification);
+         onNotification: (notification) => {
+            console.log('NOTIFICATION:', notification);
          }
-      });
+      })
    }
 
+   // SCHEDULE NOTIFICATION
    schedule(msg, seconds) {
       PushNotification.localNotificationSchedule({
          message: msg,
-         date: new Date(Date.now() + (seconds * 1000))
+         date: new Date(Date.now() + (seconds * 1000)),
       });
    }
 }
