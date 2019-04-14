@@ -22,7 +22,13 @@ function on_load(callback) {
    })
 }
 
+// WAIT FOR GIVEN MILLISECONDS
+function sleep (time) {
+   return new Promise((resolve) => setTimeout(resolve, time));
+}
+
 export {
    prompt,
-   on_load
+   on_load,
+   sleep
 };
