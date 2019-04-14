@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Text, View } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { Text } from 'react-native';
 import { sleep, prompt } from "../funcs/misc";
 import { fetch_train } from "../funcs/apis";
 import Header from '../components/header';
@@ -15,26 +15,46 @@ function Inspect({ navigation }) {
       id: id,
       speed: speed,
       coords: coords
-   })
+   });
 
-   // CHECK FOR UPDATES EVERY 5MS
+   // CURRENTLY MOUNTED STATE
+   const mounted = useRef(true);
+
+   // COMPONENT MOUNT/UNMOUNT EFFECTS
+   useEffect(() => {
+
+      // ON MOUNT, START TIMER
+      mounted.current = true;
+      update();
+
+      // ON UNMOUNT, STOP TIMER
+      return () => {
+         mounted.current = false;
+      }
+
+   }, []);
+
+   // CHECK FOR UPDATES EVERY 15s
    const update = () => {
       sleep(15000).then(() => {
-         fetch_train(state.id).then((response) => {
+         if (mounted.current) {
+            fetch_train(state.id).then((response) => {
 
-            // IF QUERY RESPONDS
-            if (response !== null) {
-
-               // UPDATE STATE
-               setState(response);
-
-               // PROMPT SUCCESS & START ANOTHER TIMER
-               prompt('Updated params!')
-               update();
-   
-            // OTHERWISE, PROMPT ERROR
-            } else { prompt('Train has stopped!') }
-         })
+               // IF QUERY RESPONDS, UPDATE STATE
+               if (response !== null) {
+                  setState(response);
+            
+                  // PROMPT SUCCESS & START ANOTHER TIMER
+                  prompt('Updated params!')
+                  update();
+            
+               // OTHERWISE, PROMPT ERROR & STOP CHECKING
+               } else {
+                  prompt('Train has stopped!');
+                  mounted.current = false;
+               }
+            })
+         }
       });
    }
 

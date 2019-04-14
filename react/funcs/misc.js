@@ -1,5 +1,5 @@
 import { ToastAndroid } from 'react-native';
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 // PROMPT TOAST MESSAGE
 function prompt(message) {
