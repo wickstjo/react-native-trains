@@ -4,7 +4,7 @@ import { Text, View, TouchableWithoutFeedback } from 'react-native';
 import { prompt } from "../funcs/misc";
 import notification from "../funcs/notifications";
 
-function Row({ item }) {
+function Row({ item, inspect }) {
 
    // IF NAME IS MISSING, FALLBACK TO TYPE
    const header = (item.name === '') ? item.type : item.name;
@@ -26,7 +26,7 @@ function Row({ item }) {
    }
    
    return (
-      <TouchableWithoutFeedback onPress={() => { schedule(item.id) }}>
+      <TouchableWithoutFeedback onPress={() => { inspect(item.id) }}>
          <View style={{ ...styles.container, ...highlight() }}>
             <Text style={ styles.first }>
                { item.type + ' ' + item.id }

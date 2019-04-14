@@ -71,8 +71,24 @@ function fetch_route(origin, destination, dispatch)  {
    });
 }
 
-function fetch_train(id) {
-   console.log('train query');
+// FETCH TRAIN INFO
+function fetch_train(number) {
+   return axios.get('https://rata.digitraffic.fi/api/v1/train-locations/latest/' + number).then((response) => {
+      
+      // IF DATA IS FOUND, FILTER GARBAGE & RETURN
+      if (response.data.length === 1) {
+         return {
+            id: response.data[0].trainNumber,
+            speed: response.data[0].speed,
+            coords: {
+               longitude: response.data[0].location.coordinates[0],
+               latitude: response.data[0].location.coordinates[1],
+            }
+         };
+
+      // OTHERWISE, RESPOND WITH NULL
+      } else { return null; }
+   });
 }
 
 export {

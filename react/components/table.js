@@ -3,14 +3,14 @@ import { View, FlatList } from 'react-native';
 import Loading from './loading';
 import Row from './row';
 
-function Table({ data }) {
+function Table({ data, inspect }) {
    if (data !== null) {
       return (
          <View style={ styles.container }>
             <FlatList
                data={ data }
                keyExtractor={(item, index) => index.toString()}
-               renderItem={({ item, index }) => <Row item={ item } /> }
+               renderItem={({ item, index }) => <Row item={ item } inspect={ inspect } /> }
             />
          </View>
       )

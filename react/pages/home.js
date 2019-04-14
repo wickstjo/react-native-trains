@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Context } from "../context";
 import { on_load, prompt } from "../funcs/misc";
-import { fetch_stations, fetch_route } from "../funcs/apis";
+import { fetch_stations, fetch_route, fetch_train } from "../funcs/apis";
 
 import Header from '../components/header';
 import Content from '../components/content';
@@ -33,9 +33,22 @@ function Home({ navigation }) {
       fetch_route('KKN', 'HKI', dispatch);
    })
 
-   // GOTO INSPECT SCREEN
-   const goto_inspect = () => {
-      navigation.navigate('Inspect');
+   // INSPECT TRAIN
+   const goto_inspect = (number) => {
+      fetch_train(number).then((response) => {
+
+         // IF QUERY RESPONDS WITH COORDS
+         if (response !== null) {
+
+            // OPEN MAP INSPECTOR
+            navigation.navigate(
+               'Inspect',
+               { data: response }
+            );
+
+         // OTHERWISE, PROMPT ERROR
+         } else { prompt('Train is not in movement!') }
+      })
    }
 
    // REFRESH QUERY
@@ -69,7 +82,10 @@ function Home({ navigation }) {
             stations={ state.stations }
          />
          <Content>
-            <Table data={ state.route } />
+            <Table
+               data={ state.route }
+               inspect={ goto_inspect }
+            />
          </Content>
          <Footer>
             <Clickable

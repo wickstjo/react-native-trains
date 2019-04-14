@@ -1,20 +1,21 @@
-import React, { useContext } from 'react';
-import { Context } from "../context";
+import React from 'react';
 import { Text, View } from 'react-native';
+import Header from '../components/header';
+import Content from '../components/content';
 
 function Inspect({ navigation }) {
 
-   // STATE
-   const { state, dispatch } = useContext(Context);
-
-   const goto_home = () => {
-      navigation.navigate('Home')
-   }
+   // DECONSTRUCT RELEVANT PARAMS & GENERATE HEADER
+   const { id, speed, coords } = navigation.state.params.data;
+   const header = '#' + id + ' (' + speed + ' km/h)';
 
    return (
-      <View>
-         <Text onPress={ goto_home }>Inspect</Text>
-      </View>
+      <>
+         <Header label={ header } />
+         <Content>
+            <Text>{ JSON.stringify(coords) }</Text>
+         </Content>
+      </>
    )
 }
 

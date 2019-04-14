@@ -41,7 +41,7 @@ const styles = {
       },
       textShadowRadius: 1,
       fontSize: 15,
-      fontFamily: 'verdana',
+      fontFamily: 'verdana'
    },
    error: {
       backgroundColor: '#D37B7B',
