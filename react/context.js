@@ -31,7 +31,7 @@ function reducer(state, action) {
 const Context = createContext();
 
 // CONTEXT PROVIDER
-function Provider(props) {
+function Provider({ children }) {
 
    // ATTACH THE REDUCER WITH THE INITIAL STATE
    const [state, dispatch] = useReducer(reducer, {
@@ -41,7 +41,7 @@ function Provider(props) {
 
    return (
       <Context.Provider value={{ state, dispatch }}>
-         { props.children }
+         { children }
       </Context.Provider>
    );
 }

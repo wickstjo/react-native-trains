@@ -51,10 +51,10 @@ function Home({ navigation }) {
       })
    }
 
-   // REFRESH QUERY
-   const refresh = () => {
+   // SEARCH FOR ROUTE
+   const search = () => {
 
-      // CHECK DESTINATION
+      // CHECK STATION STATUS
       if (input_state.origin.status && input_state.destination.status) {
 
          // CHECK IF THEY ARE THE SAME
@@ -89,8 +89,8 @@ function Home({ navigation }) {
          </Content>
          <Footer>
             <Clickable
-               label={ 'Refresh' }
-               func={ refresh }
+               label={ 'Search' }
+               func={ search }
             />
          </Footer>
       </>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Text } from 'react-native';
+import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import { sleep, prompt } from "../funcs/misc";
 import { fetch_train } from "../funcs/apis";
 import Header from '../components/header';
@@ -11,12 +11,20 @@ function Inspect({ navigation }) {
    const { id, speed, coords } = navigation.state.params.data;
 
    // TRAIN STATE
-   const [state, setState] = useState({
+   const [train, setTrain] = useState({
       id: id,
       speed: speed,
       coords: coords
    });
 
+   // REGION STATE
+   const [region, setRegion] = useState({
+      latitude: train.coords.latitude,
+      longitude: train.coords.longitude,
+      latitudeDelta: 12,
+      longitudeDelta: 12,
+   });
+   
    // CURRENTLY MOUNTED STATE
    const mounted = useRef(true);
 
@@ -38,14 +46,14 @@ function Inspect({ navigation }) {
    const update = () => {
       sleep(15000).then(() => {
          if (mounted.current) {
-            fetch_train(state.id).then((response) => {
+            fetch_train(train.id).then((response) => {
 
                // IF QUERY RESPONDS, UPDATE STATE
                if (response !== null) {
-                  setState(response);
+                  setTrain(response);
             
                   // PROMPT SUCCESS & START ANOTHER TIMER
-                  prompt('Updated params!')
+                  prompt('Updated params!');
                   update();
             
                // OTHERWISE, PROMPT ERROR & STOP CHECKING
@@ -60,12 +68,24 @@ function Inspect({ navigation }) {
 
    return (
       <>
-         <Header label={ `#${ state.id } (${ state.speed } km/h)` } />
+         <Header label={ `#${ train.id } (${ train.speed } km/h)` } />
          <Content>
-            <Text>{ JSON.stringify(state.coords) }</Text>
+            <MapView provider={ PROVIDER_GOOGLE } style={ styles.container } initialRegion={ region }>
+               <Marker
+                  coordinate={ train.coords }
+                  title={ '#' + train.id }
+               />
+            </MapView>
          </Content>
       </>
    )
+}
+
+const styles = {
+   container: {
+      flex: 1,
+      backgroundColor: '#84DD84'
+   }
 }
 
 export default Inspect;
