@@ -7,7 +7,6 @@ function fetch_stations(dispatch) {
 
       // DECLARE HASHMAPS
       const stations = new Map();
-      const codes = new Map();
 
       // LOOP THROUGH STATIONS
       response.data.forEach(station => {
@@ -23,24 +22,12 @@ function fetch_stations(dispatch) {
                }
             }
          );
-
-         // ADD SHORTCODE + COORD -- FOR POLYLINE FETCHING
-         codes.set(
-            station.stationShortCode,
-            {
-               longitude: station.longitude,
-               latitude: station.latitude
-            }
-         )
       });
 
       // UPDATE STATE
       dispatch({
-         type: 'maps',
-         payload: {
-            stations: stations,
-            codes: codes
-         }
+         type: 'stations',
+         payload: stations
       })
    });
 }

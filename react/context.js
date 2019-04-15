@@ -5,11 +5,10 @@ function reducer(state, action) {
    switch (action.type) {
 
       // SET STATION HASHMAP
-      case 'maps': {
+      case 'stations': {
          return {
             ...state,
-            stations: action.payload.stations,
-            codes: action.payload.codes
+            stations: action.payload
          }
       }
       
@@ -37,7 +36,6 @@ function Provider({ children }) {
    // ATTACH THE REDUCER WITH THE INITIAL STATE
    const [state, dispatch] = useReducer(reducer, {
       stations: null,
-      codes: null,
       route: null
    });
 

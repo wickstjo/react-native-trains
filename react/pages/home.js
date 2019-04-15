@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { Context } from "../context";
-import { on_load, prompt } from "../funcs/misc";
+import { on_load, prompt, sleep } from "../funcs/misc";
 import { fetch_stations, fetch_route, fetch_train } from "../funcs/apis";
 
 import Header from '../components/header';
@@ -27,7 +27,7 @@ function Home({ navigation }) {
       }
    });
 
-   // ON INIT LOAD, DO
+   // ON INIT LOAD, FETCH STATION SHORTCODES
    on_load(() => {
       fetch_stations(dispatch);
    })
@@ -62,6 +62,12 @@ function Home({ navigation }) {
          // CHECK IF VALUES ARE THE SAME
          if (input_state.origin.value !== input_state.destination.value) {
             
+            // PROMPT LOADING SPINNER
+            dispatch({
+               type: 'route',
+               payload: 'loading'
+            })
+
             // UPDATE STATE ROUTE
             fetch_route(
                input_state.origin.value,
