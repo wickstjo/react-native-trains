@@ -26,7 +26,7 @@ function Row({ item, inspect }) {
    }
    
    return (
-      <TouchableWithoutFeedback onPress={() => { inspect(item.id) }}>
+      <TouchableWithoutFeedback onPress={() => { inspect(item.id, item.stations) }}>
          <View style={{ ...styles.container, ...highlight() }}>
             <Text style={ styles.first }>
                { item.type + ' ' + item.id }

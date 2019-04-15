@@ -12,7 +12,13 @@ function fetch_stations(dispatch) {
       response.data.forEach(station => {
          stations.set(
             station.stationName.toLowerCase(),
-            station.stationShortCode
+            {
+               code: station.stationShortCode,
+               coords: {
+                  longitude: station.longitude,
+                  latitude: station.latitude
+               }
+            }
          );
       });
 
@@ -25,7 +31,7 @@ function fetch_stations(dispatch) {
 }
 
 // FIND TRAINS GOING FROM X TO Y
-function fetch_route(origin, destination, dispatch)  {
+function fetch_route(origin, destination, dispatch, stations)  {
 
    // GENERATE DATE
    const today = moment().format("YYYY-MM-DD");
@@ -59,7 +65,8 @@ function fetch_route(origin, destination, dispatch)  {
             id: train.trainNumber,
             start: start,
             end: end,
-            duration: ((end - start) / 1000) / 60
+            duration: ((end - start) / 1000) / 60,
+            stations: stations
          })
       });
 
@@ -74,6 +81,7 @@ function fetch_route(origin, destination, dispatch)  {
 // FETCH TRAIN INFO
 function fetch_train(number) {
    return axios.get('https://rata.digitraffic.fi/api/v1/train-locations/latest/' + number).then((response) => {
+      console.log(response)
       
       // IF DATA IS FOUND, FILTER GARBAGE & RETURN
       if (response.data.length === 1) {

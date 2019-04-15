@@ -34,7 +34,7 @@ function Home({ navigation }) {
    })
 
    // INSPECT TRAIN
-   const goto_inspect = (number) => {
+   const goto_inspect = (number, stations) => {
       fetch_train(number).then((response) => {
 
          // IF QUERY RESPONDS WITH COORDS
@@ -43,7 +43,10 @@ function Home({ navigation }) {
             // OPEN MAP INSPECTOR
             navigation.navigate(
                'Inspect',
-               { data: response }
+               {
+                  data: response,
+                  stations: stations
+               }
             );
 
          // OTHERWISE, PROMPT ERROR
@@ -60,11 +63,18 @@ function Home({ navigation }) {
          // CHECK IF THEY ARE THE SAME
          if (input_state.origin.value !== input_state.destination.value) {
 
+            const origin = state.stations.get(input_state.origin.value);
+            const destination = state.stations.get(input_state.destination.value);
+
             // UPDATE STATE ROUTE
             fetch_route(
-               state.stations.get(input_state.origin.value),
-               state.stations.get(input_state.destination.value),
-               dispatch
+               origin.code,
+               destination.code,
+               dispatch,
+               {
+                  start: origin.coords,
+                  end: destination.coords
+               }
 
             // AFTERWARDS, PROMPT SUCCESS
             ).then(() => { prompt('Schedule Updated!') });

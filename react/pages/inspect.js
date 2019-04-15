@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
+import MapViewDirections from 'react-native-maps-directions';
 import { sleep, prompt } from "../funcs/misc";
 import { fetch_train } from "../funcs/apis";
 import Header from '../components/header';
@@ -7,8 +8,9 @@ import Content from '../components/content';
 
 function Inspect({ navigation }) {
 
-   // DECONSTRUCT INITIAL PARAMS
+   // DECONSTRUCT INITIAL DATA & STATION PARAMS
    const { id, speed, coords } = navigation.state.params.data;
+   const { start, end } = navigation.state.params.stations;
 
    // TRAIN STATE
    const [train, setTrain] = useState({
@@ -21,8 +23,8 @@ function Inspect({ navigation }) {
    const [region, setRegion] = useState({
       latitude: train.coords.latitude,
       longitude: train.coords.longitude,
-      latitudeDelta: 12,
-      longitudeDelta: 12,
+      latitudeDelta: 1,
+      longitudeDelta: 1,
    });
    
    // CURRENTLY MOUNTED STATE
@@ -74,6 +76,14 @@ function Inspect({ navigation }) {
                <Marker
                   coordinate={ train.coords }
                   title={ '#' + train.id }
+               />
+               <MapViewDirections
+                  origin={ start }
+                  destination={ end }
+                  apikey={ 'AIzaSyBcbkfxWDiiWg6sjnkWHdsrsW7-bT7tfE8' }
+                  mode={ 'transit' }
+                  strokeWidth={ 3 }
+                  strokeColor={ 'hotpink' }
                />
             </MapView>
          </Content>
