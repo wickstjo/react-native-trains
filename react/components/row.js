@@ -26,19 +26,19 @@ function Row({ item, inspect }) {
    }
    
    return (
-      <TouchableWithoutFeedback onPress={() => { inspect(item.id, item.stations) }}>
+      <TouchableWithoutFeedback onPress={() => { inspect(item) }}>
          <View style={{ ...styles.container, ...highlight() }}>
             <Text style={ styles.first }>
-               { item.type + ' ' + item.id }
+               { item.type + ' ' + item.number }
             </Text>
             <Text style={ styles.column }>
                { header }
             </Text>
             <Text style={ styles.column }>
-               { item.duration }m
+               { item.time.duration }m
             </Text>
             <Text style={ styles.column }>
-               { moment(item.start).format('H:mm') }
+               { moment(item.time.origin).format('H:mm') }
             </Text>
          </View>
       </TouchableWithoutFeedback>

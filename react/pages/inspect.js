@@ -8,21 +8,16 @@ import Content from '../components/content';
 
 function Inspect({ navigation }) {
 
-   // DECONSTRUCT INITIAL DATA & STATION PARAMS
-   const { id, speed, coords } = navigation.state.params.data;
-   const { start, end } = navigation.state.params.stations;
+   // FETCH GIVEN PARAMS
+   const { details, _query } = navigation.state.params;
 
-   // TRAIN STATE
-   const [train, setTrain] = useState({
-      id: id,
-      speed: speed,
-      coords: coords
-   });
+   // POSITIONAL QUERY STATE
+   const [query, setQuery] = useState(_query);
 
-   // REGION STATE
+   // INITIAL REGION
    const [region, setRegion] = useState({
-      latitude: train.coords.latitude,
-      longitude: train.coords.longitude,
+      latitude: query.position.latitude,
+      longitude: query.position.longitude,
       latitudeDelta: 1,
       longitudeDelta: 1,
    });
@@ -48,11 +43,11 @@ function Inspect({ navigation }) {
    const update = () => {
       sleep(15000).then(() => {
          if (mounted.current) {
-            fetch_train(train.id).then((response) => {
+            fetch_train(details.number).then((response) => {
 
                // IF QUERY RESPONDS, UPDATE STATE
                if (response !== null) {
-                  setTrain(response);
+                  setQuery(response);
             
                   // PROMPT SUCCESS & START ANOTHER TIMER
                   prompt('Updated params!');
@@ -70,16 +65,16 @@ function Inspect({ navigation }) {
 
    return (
       <>
-         <Header label={ `#${ train.id } (${ train.speed } km/h)` } />
+         <Header label={ `#${ details.number } (${ query.speed } km/h)` } />
          <Content>
             <MapView provider={ PROVIDER_GOOGLE } style={ styles.container } initialRegion={ region }>
                <Marker
-                  coordinate={ train.coords }
-                  title={ '#' + train.id }
+                  coordinate={ query.position }
+                  title={ '#' + details.number }
                />
                <MapViewDirections
-                  origin={ start }
-                  destination={ end }
+                  origin={ details.poly.origin }
+                  destination={ details.poly.destination }
                   apikey={ 'AIzaSyBcbkfxWDiiWg6sjnkWHdsrsW7-bT7tfE8' }
                   mode={ 'transit' }
                   strokeWidth={ 3 }

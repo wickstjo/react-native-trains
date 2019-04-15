@@ -30,12 +30,11 @@ function Home({ navigation }) {
    // ON INIT LOAD, DO
    on_load(() => {
       fetch_stations(dispatch);
-      fetch_route('KKN', 'HKI', dispatch);
    })
 
    // INSPECT TRAIN
-   const goto_inspect = (number, stations) => {
-      fetch_train(number).then((response) => {
+   const goto_inspect = (train) => {
+      fetch_train(train.number).then((response) => {
 
          // IF QUERY RESPONDS WITH COORDS
          if (response !== null) {
@@ -44,8 +43,8 @@ function Home({ navigation }) {
             navigation.navigate(
                'Inspect',
                {
-                  data: response,
-                  stations: stations
+                  details: train,
+                  _query: response
                }
             );
 
@@ -57,24 +56,18 @@ function Home({ navigation }) {
    // SEARCH FOR ROUTE
    const search = () => {
 
-      // CHECK STATION STATUS
+      // CHECK INPUT STATUS
       if (input_state.origin.status && input_state.destination.status) {
 
-         // CHECK IF THEY ARE THE SAME
+         // CHECK IF VALUES ARE THE SAME
          if (input_state.origin.value !== input_state.destination.value) {
-
-            const origin = state.stations.get(input_state.origin.value);
-            const destination = state.stations.get(input_state.destination.value);
-
+            
             // UPDATE STATE ROUTE
             fetch_route(
-               origin.code,
-               destination.code,
+               input_state.origin.value,
+               input_state.destination.value,
                dispatch,
-               {
-                  start: origin.coords,
-                  end: destination.coords
-               }
+               state.stations
 
             // AFTERWARDS, PROMPT SUCCESS
             ).then(() => { prompt('Schedule Updated!') });
