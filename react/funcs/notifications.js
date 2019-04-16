@@ -1,4 +1,5 @@
 import PushNotification from 'react-native-push-notification';
+import { prompt } from './misc';
 
 class Notifications {
 
@@ -6,9 +7,14 @@ class Notifications {
    constructor() {
       PushNotification.configure({
          onNotification: (notification) => {
-            console.log('NOTIFICATION:', notification);
+            if (notification.action === 'Check') {
+               console.log('foo');
+               prompt('CHECK IF TRAIN IS LATE');
+            } else {
+               PushNotification.cancelAllLocalNotifications();
+            }
          }
-      })
+      });
    }
 
    // SCHEDULE NOTIFICATION
@@ -16,6 +22,7 @@ class Notifications {
       PushNotification.localNotificationSchedule({
          message: msg,
          date: new Date(Date.now() + (seconds * 1000)),
+         actions: '["Check", "Dismiss"]'
       });
    }
 }

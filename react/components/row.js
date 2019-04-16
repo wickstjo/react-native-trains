@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import moment from 'moment';
 import { Text, View, TouchableWithoutFeedback } from 'react-native';
 import { prompt } from "../funcs/misc";
@@ -21,7 +21,7 @@ function Row({ item, inspect }) {
 
    // SCHEDULE A NOTIFICATION
    const schedule = (item) => {
-      //prompt('Train #' + item.number + ' scheduled!');
+      prompt('Train #' + item.number + ' scheduled!');
       notification.schedule('Train #' + item.number + ' is about to leave!', 3);
    }
    
