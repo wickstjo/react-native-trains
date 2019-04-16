@@ -18,12 +18,12 @@ function Home({ navigation }) {
    // INPUT STATE
    const [input_state, set_input_state] = useState({
       origin: {
-         value: '',
-         status: false,
+         value: 'kirkkonummi',
+         status: true,
       },
       destination: {
-         value: '',
-         status: false,
+         value: 'helsinki asema',
+         status: true,
       }
    });
 
@@ -49,7 +49,7 @@ function Home({ navigation }) {
             );
 
          // OTHERWISE, PROMPT ERROR
-         } else { prompt('Train is not in movement!') }
+         } else { prompt('Train is not moving!') }
       })
    }
 
@@ -76,7 +76,17 @@ function Home({ navigation }) {
                state.stations
 
             // AFTERWARDS, PROMPT SUCCESS
-            ).then(() => { prompt('Schedule Updated!') });
+            ).then(() => {
+               prompt('Schedule Updated!')
+            })
+
+            // ON ERROR, MORPH TEXT
+            .catch(() => {
+               dispatch({
+                  type: 'route',
+                  payload: 'error'
+               })
+            });
 
          } else { prompt('Stations cannot be the same!') }
       } else { prompt('One or both of the stations are invalid!') }

@@ -20,33 +20,43 @@ function Row({ item, inspect }) {
    }
 
    // SCHEDULE A NOTIFICATION
-   const schedule = (number) => {
-      prompt('Train #' + number + ' scheduled!');
-      notification.schedule('Train #' + number + ' is about to leave!', 3);
+   const schedule = (item) => {
+      //prompt('Train #' + item.number + ' scheduled!');
+      notification.schedule('Train #' + item.number + ' is about to leave!', 3);
    }
    
    return (
-      <TouchableWithoutFeedback onPress={() => { inspect(item) }}>
-         <View style={{ ...styles.container, ...highlight() }}>
-            <Text style={ styles.first }>
-               { item.type + ' ' + item.number }
-            </Text>
-            <Text style={ styles.column }>
-               { header }
-            </Text>
-            <Text style={ styles.column }>
-               { item.time.duration }m
-            </Text>
-            <Text style={ styles.column }>
-               { moment(item.time.origin).format('H:mm') }
-            </Text>
-         </View>
-      </TouchableWithoutFeedback>
+      <View style={{ flex: 1, flexDirection: 'row' }}>
+         <TouchableWithoutFeedback onPress={() => { inspect(item) }}>
+            <View style={{ ...styles.container, ...highlight() }}>
+               <Text style={ styles.first }>
+                  { item.type + ' ' + item.number }
+               </Text>
+               <Text style={ styles.column }>
+                  { header }
+               </Text>
+               <Text style={ styles.column }>
+                  { item.time.duration }m
+               </Text>
+               <Text style={ styles.column }>
+                  { moment(item.time.origin).format('H:mm') }
+               </Text>
+            </View>
+         </TouchableWithoutFeedback>
+         <TouchableWithoutFeedback onPress={() => { schedule(item) }}>
+            <View style={ styles.subscribe }>
+               <Text style={ styles.text }>
+                  SUB
+               </Text>
+            </View>
+         </TouchableWithoutFeedback>
+      </View>
    )
 }
 
 const styles = {
    container: {
+      flex: 3,
       padding: 10,
       flexDirection: 'row',
       marginBottom: 3,
@@ -63,6 +73,19 @@ const styles = {
       textAlign: 'right',
       fontSize: 15,
       fontFamily: 'verdana',
+   },
+   subscribe: {
+      backgroundColor: '#9F56D2',
+      borderBottomWidth: 1,
+      borderBottomColor: '#9147C4',
+      padding: 10,
+      marginLeft: 3,
+      marginBottom: 3,
+   },
+   text: {
+      fontSize: 15,
+      fontFamily: 'verdana',
+      color: 'white',
    }
 }
 

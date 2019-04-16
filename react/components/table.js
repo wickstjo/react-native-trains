@@ -9,6 +9,16 @@ function Table({ data, inspect }) {
       // WHEN LOADING
       case 'loading':
          return <Loading />
+
+      // IN API ERROR
+      case 'error':
+         return (
+            <View style={ styles.null_container }>
+               <Text style={ styles.null_inner }>
+                  API Error. Try again!
+               </Text>
+            </View>
+         )
       
       // WHEN NOTHING HAS BEEN SEARCHED FOR
       case null:
