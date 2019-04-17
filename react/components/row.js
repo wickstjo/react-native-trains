@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import moment from 'moment';
 import { Text, View, TouchableWithoutFeedback } from 'react-native';
 import { prompt } from "../funcs/misc";
@@ -19,10 +19,18 @@ function Row({ item, inspect }) {
       }
    }
 
-   // SCHEDULE A NOTIFICATION
+   // SCHEDULE LOCAL NOTIFICATION
    const schedule = (item) => {
+
+      // PROMPT SUCCESS
       prompt('Train #' + item.number + ' scheduled!');
-      notification.schedule('Train #' + item.number + ' is about to leave!', 3);
+
+      // SCHEDULE THE NOTIFICATION
+      notification.schedule({
+         message: 'Train #' + item.number + ' is about to leave!',
+         timestamp: item.time.origin,
+         id: item.number
+      });
    }
    
    return (
@@ -45,9 +53,7 @@ function Row({ item, inspect }) {
          </TouchableWithoutFeedback>
          <TouchableWithoutFeedback onPress={() => { schedule(item) }}>
             <View style={ styles.subscribe }>
-               <Text style={ styles.text }>
-                  SUB
-               </Text>
+               <Text style={ styles.text }>SUB</Text>
             </View>
          </TouchableWithoutFeedback>
       </View>

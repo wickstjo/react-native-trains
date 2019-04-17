@@ -1,4 +1,5 @@
 import PushNotification from 'react-native-push-notification';
+import { check_delay } from './apis';
 import { prompt } from './misc';
 
 class Notifications {
@@ -8,8 +9,7 @@ class Notifications {
       PushNotification.configure({
          onNotification: (notification) => {
             if (notification.action === 'Check') {
-               console.log('foo');
-               prompt('CHECK IF TRAIN IS LATE');
+               prompt(check_delay());
             } else {
                PushNotification.cancelAllLocalNotifications();
             }
@@ -18,10 +18,11 @@ class Notifications {
    }
 
    // SCHEDULE NOTIFICATION
-   schedule(msg, seconds) {
+   schedule({ message, timestamp, id }) {
       PushNotification.localNotificationSchedule({
-         message: msg,
-         date: new Date(Date.now() + (seconds * 1000)),
+         message: message,
+         date: new Date(timestamp),
+         number: id,
          actions: '["Check", "Dismiss"]'
       });
    }

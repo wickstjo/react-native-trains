@@ -4,7 +4,7 @@ import moment from 'moment';
 // FIND STATION ACRONYMS
 function fetch_stations(dispatch) {
    axios.get('https://rata.digitraffic.fi/api/v1/metadata/stations').then((response) => {
-   
+
       // DECLARE HASHMAPS
       const stations = new Map();
 
@@ -31,7 +31,7 @@ function fetch_stations(dispatch) {
 }
 
 // FIND TRAINS GOING FROM X TO Y
-function fetch_route(origin, destination, dispatch, stations)  {
+function fetch_route(origin, destination, dispatch, stations) {
 
    // FETCH STATION PROPS
    origin = stations.get(origin);
@@ -108,8 +108,14 @@ function fetch_train(number) {
    });
 }
 
+// CHECK IF TRAIN IS DELAYED
+function check_delay() {
+   return 'CHECK IF TRAIN IS DELAYED';
+}
+
 export {
    fetch_stations,
    fetch_route,
-   fetch_train
+   fetch_train,
+   check_delay
 };

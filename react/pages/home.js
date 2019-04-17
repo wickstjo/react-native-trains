@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { Context } from "../context";
-import { on_load, prompt, sleep } from "../funcs/misc";
+import { on_load, prompt } from "../funcs/misc";
 import { fetch_stations, fetch_route, fetch_train } from "../funcs/apis";
 
 import Header from '../components/header';
@@ -76,9 +76,7 @@ function Home({ navigation }) {
                state.stations
 
             // AFTERWARDS, PROMPT SUCCESS
-            ).then(() => {
-               prompt('Schedule Updated!')
-            })
+            ).then(() => { prompt('Schedule Updated!') })
 
             // ON ERROR, MORPH TEXT
             .catch(() => {
