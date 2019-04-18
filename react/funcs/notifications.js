@@ -8,21 +8,30 @@ class Notifications {
    constructor() {
       PushNotification.configure({
          onNotification: (notification) => {
-            if (notification.action === 'Check') {
-               prompt(check_delay());
-            } else {
-               PushNotification.cancelAllLocalNotifications();
+            switch (notification.action) {
+
+               // WHEN CHECK IS PRESSED
+               case 'Check':
+                  check_delay(notification).then((message) => {
+                     prompt(message);
+                  });
+               break;
+
+               // WHEN SOMETHING ELSE IS PRESSED
+               default:
+                  PushNotification.cancelAllLocalNotifications();
+               break;
             }
          }
       });
    }
 
    // SCHEDULE NOTIFICATION
-   schedule({ message, timestamp, id }) {
+   schedule({ message, timestamp, number, origin }) {
       PushNotification.localNotificationSchedule({
          message: message,
          date: new Date(timestamp),
-         number: id,
+         ticker: number + '-' + origin,
          actions: '["Check", "Dismiss"]'
       });
    }

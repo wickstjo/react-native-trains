@@ -22,21 +22,55 @@ function Row({ item, inspect }) {
    // SCHEDULE LOCAL NOTIFICATION
    const schedule = (item) => {
 
-      // PROMPT SUCCESS
-      prompt('Train #' + item.number + ' scheduled!');
+      // NOW + 1H
+      const now = Date.now() + 3600000;
 
-      // SCHEDULE THE NOTIFICATION
-      notification.schedule({
-         message: 'Train #' + item.number + ' is about to leave!',
-         timestamp: item.time.origin,
-         id: item.number
-      });
+      // IF TRAIN HASNT DEPARTED YET
+      if (item.time.origin > now) {
+
+         // PROMPT SUCCESS
+         prompt('Train #' + item.number + ' reminders scheduled!');
+
+         // SCHEDULE 60m REMINDER
+         notification.schedule({
+            message: 'Train #' + item.number + ' is scheduled to leave in 60min!',
+            timestamp: item.time.origin - 3600000,
+            number: item.number,
+            origin: item.origin
+         });
+
+         // SCHEDULE 30m REMINDER
+         notification.schedule({
+            message: 'Train #' + item.number + ' is scheduled to leave in 30min!',
+            timestamp: item.time.origin - 1800000,
+            number: item.number,
+            origin: item.origin
+         });
+
+         // SCHEDULE 15m REMINDER
+         notification.schedule({
+            message: 'Train #' + item.number + ' is scheduled to leave in 15min!',
+            timestamp: item.time.origin - 900000,
+            number: item.number,
+            origin: item.origin
+         });
+         
+         // SCHEDULE 5m REMINDER
+         notification.schedule({
+            message: 'Train #' + item.number + ' is scheduled to leave in 5min!',
+            timestamp: item.time.origin - 300000,
+            number: item.number,
+            origin: item.origin
+         });
+      
+      // OTHERWISE, PROMPT ERROR
+      } else { prompt('Train has already departed!') }
    }
    
    return (
-      <View style={{ flex: 1, flexDirection: 'row' }}>
+      <View style={ styles.container }>
          <TouchableWithoutFeedback onPress={() => { inspect(item) }}>
-            <View style={{ ...styles.container, ...highlight() }}>
+            <View style={{ ...styles.primary, ...highlight() }}>
                <Text style={ styles.first }>
                   { item.type + ' ' + item.number }
                </Text>
@@ -62,6 +96,10 @@ function Row({ item, inspect }) {
 
 const styles = {
    container: {
+      flex: 1,
+      flexDirection: 'row'
+   },
+   primary: {
       flex: 3,
       padding: 10,
       flexDirection: 'row',

@@ -38,7 +38,7 @@ function fetch_route(origin, destination, dispatch, stations) {
    destination = stations.get(destination);
 
    // GENERATE TIMESTAMPS
-   const today = moment().subtract(3, 'hours').format("YYYY-MM-DD");
+   const today = moment().format("YYYY-MM-DD");
    const now = Date.now() - 3600000;
 
    // EXECUTE REQUEST
@@ -68,6 +68,7 @@ function fetch_route(origin, destination, dispatch, stations) {
                name: train.commuterLineID,
                type: train.trainType,
                moving: train.runningCurrently,
+               origin: origin.code,
                time: {
                   origin: start,
                   destination: end,
@@ -109,8 +110,55 @@ function fetch_train(number) {
 }
 
 // CHECK IF TRAIN IS DELAYED
-function check_delay() {
-   return 'CHECK IF TRAIN IS DELAYED';
+function check_delay({ ticker }) {
+
+   // FETCH NUMBER & ORIGIN STATION
+   const [number, origin] = ticker.split('-');
+
+   // FETCH SCHEDULE
+   return axios.get('https://rata.digitraffic.fi/api/v1/trains/latest/' + number).then((response) => {
+
+      // DECLARE TARGET SHORTHAND & MESSAGE
+      const target = response.data[0];
+      let message = '';
+      
+      // IF THE TRAIN HAS NOT BEEN CANCELLED
+      if (!target.cancelled) {
+
+         // DECLARE DIFFERENCE
+         let difference;
+
+         // FIND THE CORRECT DEPARTURE STATION & CHECK TIME DIFFERENCE
+         target.timeTableRows.forEach(station => {
+            if (station.stationShortCode === origin && station.type === 'DEPARTURE') {
+               difference = station.differenceInMinutes;
+            }
+         });
+
+         // FIND CORRECT MESSAGE
+         switch(difference) {
+
+            // ON TIME
+            case 0:
+               message = 'Train #' + number + ' is on time!';
+            break;
+            
+            // API ERROR
+            case undefined:
+               message = 'Unable to check for delay!';
+            break;
+
+            // WHEN DELAYED
+            default:
+               message = 'Train #' + number + ' is running ' + difference + ' minute(s) late!';
+            break;
+         }
+
+      // IF TRAIN HAS BEEN CANCELLED
+      } else { message = 'Train #' + number + ' has been cancelled!'; }
+
+      return message;
+   });
 }
 
 export {
